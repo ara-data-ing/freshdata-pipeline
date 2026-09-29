@@ -12,12 +12,17 @@ def cargar_ventas(archivo):
     ]
     return ventas
 
-def calcualr_total_tienda(ventas, tienda_id):
-    """Calcula el total de ventas de una tienda."""
+# Pedro MODIFICA la función calcular_total_tienda para aplicar IVA
+
+def calcualr_total_tienda(ventas, tienda_id, con_iva=True):
+    """Calcula el total de ventas de una tienda (con IVA por defecto)."""
     total = 0
     for venta in ventas:
         if venta["tienda"] == tienda_id:
             total += venta["cantidad"] * venta["precio"]
+    if con_iva:
+        from config import IVA   # importa la constante del archivo de configuración
+        total *= (1 + IVA)       # multiplica por 1.21 si con_iva es True
     return total
 
 # Ana añade esta función al pipeline de ventas
