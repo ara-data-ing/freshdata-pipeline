@@ -25,6 +25,21 @@ def calcualr_total_tienda(ventas, tienda_id, con_iva=True):
         total *= (1 + IVA)       # multiplica por 1.21 si con_iva es True
     return total
 
+# Ana añade esta función al pipeline de ventas
+
+def resumen_por_producto(ventas):
+    """Genera resumen de ventas agrupado por producto."""
+    resumen = {}                                         # diccionario vacío para acumular totales por producto
+    for venta in ventas:                                 # itera cada registro de venta
+        producto = venta["producto"]
+        ingreso = venta["cantidad"] * venta["precio"]
+        if producto in resumen:                          # si ya existe, suma al acumulado; si no, inicializa
+            resumen[producto] += ingreso
+        else:
+            resumen[producto] = ingreso
+    return resumen
+
+
 if __name__ == "__main__":
     ventas = cargar_ventas("ventas_2024_01.csv")
     total = calcualr_total_tienda(ventas, "T001")
